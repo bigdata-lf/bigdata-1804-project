@@ -52,7 +52,7 @@
      */
     var tracker = {
         clientConfig: {
-            logServerUrl: "http://mini1/log.gif",//日志服务器地址
+            logServerUrl: "http://hadoop-1804-01/log.gif",//日志服务器地址
             sessionTimeOut: 2 * 60 * 1000,//会话过期时间
             logVersion: "1.0"
         },
@@ -263,6 +263,7 @@
         updatePreVisitTime: function () {
             cookieUtils.set(this.cookieKeys.preVisitTime, new Date().getTime());
         },
+
         /**
          * 设置公共字段
          */
@@ -307,7 +308,17 @@
         }
 
     };
-    tracker.sessionStart();
-
+    //给window对象注入属性__AE__
+    window.__AE__ = {
+        sessionStart: function () {
+            tracker.sessionStart()
+        },
+        searchEvent: function (keyword) {
+            tracker.searchEvent(keyword)
+        },
+        addCartEvent: function (pid) {
+            tracker.addCartEvent(pid)
+        }
+    };
+    window.__AE__.sessionStart();
 })();
-
